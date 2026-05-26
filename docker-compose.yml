@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  # 1. Database Service (MySQL)
+  db:
+    image: mysql:8.0
+    container_name: myeduconnect_db
+    environment:
+      MYSQL_ROOT_PASSWORD: root # VULNERABILITY: Extremely weak default credential
+      MYSQL_DATABASE: myeduconnect
+    ports:
+      - "3306:3306" # VULNERABILITY: Database port exposed directly to the public/host network instead of remaining internal-only
+    volumes:
+      - db_data:/var/lib/mysql
+
+  # 2. Backend Service (Node.js)
+  backend:
+    build: ./backend # Assumes you have a 'backend' folder with your Node.js Dockerfile
+    container_name: myeduconnect_backend
+    environment:
+      - DB_HOST=db
+      - DB_USER=root
+      - DB_PASSWORD=root
+      - DB_NAME=myeduconnect
+      - NODE_ENV=development
+    ports:
+      - "8080:8080" # VULNERABILITY: Backend API exposed directly, allowing attackers to bypass the Nginx proxy
+    depends_on:
+      - db
+
+  # 3. Web Server / Reverse Proxy (Nginx)
+  proxy:
+    image: nginx:alpine
+    container_name: myeduconnect_proxy
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro # Assumes you have an nginx config folder
+    ports:
+      - "80:80" # VULNERABILITY: Cleartext HTTP traffic. No TLS/SSL configured (Missing HTTPS)
+    depends_on:
+      - backend
+
+volumes:
+  db_data:

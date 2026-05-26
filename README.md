@@ -1,0 +1,1 @@
+# MyEduConnect Security Project Phase 1\nRun `docker-compose up -d` to start the vulnerable environment.
