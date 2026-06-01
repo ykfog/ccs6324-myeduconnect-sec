@@ -1,0 +1,9 @@
+┌──(kali㉿kali)-[~/ccs6324-myeduconnect-sec]
+└─$ sudo nmap -sU --top-ports 100 -T4 127.0.0.1
+Starting Nmap 7.98 ( https://nmap.org ) at 2026-05-31 23:26 -0400
+Nmap scan report for localhost (127.0.0.1)
+Host is up (0.0000040s latency).
+All 100 scanned ports on localhost (127.0.0.1) are in ignored states.
+Not shown: 100 closed udp ports (port-unreach)
+
+Nmap done: 1 IP address (1 host up) scanned in 0.14 seconds

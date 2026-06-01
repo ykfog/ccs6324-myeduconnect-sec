@@ -1,0 +1,31 @@
+┌──(kali㉿kali)-[~/ccs6324-myeduconnect-sec]
+└─$ sudo nmap -sS -sV -sC -p 22,80,3306,8080 -T4 127.0.0.1
+[sudo] password for kali: 
+Starting Nmap 7.98 ( https://nmap.org ) at 2026-05-31 23:26 -0400
+Nmap scan report for localhost (127.0.0.1)
+Host is up (0.000047s latency).
+
+PORT     STATE  SERVICE VERSION
+22/tcp   closed ssh
+80/tcp   open   http    nginx 1.31.1
+|_http-title: Error
+|_http-server-header: nginx/1.31.1
+3306/tcp open   mysql   MySQL 8.0.46
+| mysql-info: 
+|   Protocol: 10
+|   Version: 8.0.46
+|   Thread ID: 10
+|   Capabilities flags: 65535
+|   Some Capabilities: FoundRows, Support41Auth, ConnectWithDatabase, SupportsCompression, LongColumnFlag, IgnoreSigpipes, SupportsTransactions, Speaks41ProtocolOld, LongPassword, SupportsLoadDataLocal, IgnoreSpaceBeforeParenthesis, SwitchToSSLAfterHandshake, InteractiveClient, Speaks41ProtocolNew, ODBCClient, DontAllowDatabaseTableColumn, SupportsMultipleResults, SupportsAuthPlugins, SupportsMultipleStatments
+|   Status: Autocommit
+|   Salt: k.>\x07%P,u\x0B\x1C0h\x13\x0D\x06ZO!\x0BS
+|_  Auth Plugin Name: caching_sha2_password
+| ssl-cert: Subject: commonName=MySQL_Server_8.0.46_Auto_Generated_Server_Certificate
+| Not valid before: 2026-05-29T13:20:41
+|_Not valid after:  2036-05-26T13:20:41
+|_ssl-date: TLS randomness does not represent time
+8080/tcp open   http    Node.js Express framework
+|_http-title: Error
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 11.79 seconds
