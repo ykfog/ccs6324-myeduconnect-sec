@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head><title>Courses - MyEduConnect</title></head>
+<body>
+    <h2>All Courses</h2>
+    <form method="GET" action="/courses">
+        <input type="text" name="search" placeholder="Search courses" value="<%= search %>">
+        <button type="submit">Search</button>
+    </form>
+    <ul>
+        <% courses.forEach(course => { %>
+            <li><a href="/courses/<%= course.id %>"><%= course.title %></a> - <%= course.description %></li>
+        <% }) %>
+    </ul>
+    <a href="/">Home</a>
+</body>
+</html>
