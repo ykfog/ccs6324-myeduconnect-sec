@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head><title>Mock Payment - MyEduConnect</title></head>
+<body>
+    <h2>Enroll in Course</h2>
+    <p>Course ID: <%= courseId %></p>
+    <form method="POST" action="/payment/enroll">
+        <input type="hidden" name="course_id" value="<%= courseId %>">
+        <label>Card Number (demo):</label>
+        <input type="text" name="card_number" placeholder="4111 1111 1111 1111" required><br>
+        <label>CVV (demo):</label>
+        <input type="text" name="cvv" placeholder="123" required><br>
+        <button type="submit">Pay Now (Mock)</button>
+    </form>
+    <p><a href="/courses">Back to Courses</a></p>
+</body>
+</html>
