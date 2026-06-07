@@ -13,7 +13,7 @@ Open your terminal and move into the root folder containing the Docker configura
 ```bash
 cd ~/ccs6324-myeduconnect-sec
 
-Step 2: Build and Launch the Containers
+### Step 2: Build and Launch the Containers
 Execute the Docker Compose command to build the images and run them in the background:
 
 Bash
@@ -24,7 +24,7 @@ up creates and starts the network.
 
 --build forces Docker to compile the Node.js backend using the latest source code.
 
-Step 3: Verify the Status
+### Step 3: Verify the Status
 Check that all three core services have successfully launched without errors:
 
 Bash
