@@ -1,13 +1,220 @@
 <!DOCTYPE html>
-<html>
-<head><title>MyEduConnect</title></head>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MyEduConnect — Learn Without Limits</title>
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    /* ── Hero ── */
+    .hero {
+      min-height: calc(100vh - 65px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 80px 0 60px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 70% 60% at 70% 50%, rgba(201,168,76,0.04) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 40% at 20% 80%, rgba(201,168,76,0.03) 0%, transparent 50%);
+      pointer-events: none;
+    }
+    .hero-grid-line {
+      position: absolute;
+      right: 0; top: 0; bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, var(--border), transparent);
+      left: calc(50% + 280px);
+    }
+    .hero-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      display: block;
+      width: 32px;
+      height: 1px;
+      background: var(--gold);
+    }
+    .hero-headline {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 7vw, 6rem);
+      font-weight: 300;
+      line-height: 1.05;
+      color: var(--cream);
+      max-width: 720px;
+      letter-spacing: -.02em;
+    }
+    .hero-headline em {
+      font-style: italic;
+      color: var(--gold);
+    }
+    .hero-desc {
+      max-width: 480px;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.7;
+      margin: 28px 0 40px;
+    }
+    .hero-cta { display: flex; gap: 16px; flex-wrap: wrap; }
+
+    /* ── Stats bar ── */
+    .stats-bar {
+      border-top: 1px solid var(--border);
+      padding: 32px 0;
+      margin-top: 80px;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .stat-item {
+      background: var(--surface);
+      padding: 28px 32px;
+    }
+    .stat-num {
+      font-family: var(--font-display);
+      font-size: 2.8rem;
+      font-weight: 300;
+      color: var(--cream);
+      line-height: 1;
+    }
+    .stat-num span { color: var(--gold); }
+    .stat-label {
+      font-size: 12px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    /* ── Welcome card (logged in) ── */
+    .welcome-card {
+      margin-top: 32px;
+      padding: 32px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .welcome-name {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 400;
+      color: var(--cream);
+    }
+    .welcome-links { display: flex; gap: 12px; flex-wrap: wrap; }
+
+    @media (max-width: 640px) {
+      .stats-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
 <body>
-    <h1>Welcome to MyEduConnect</h1>
-    <% if (user) { %>
-        <p>Hello, <%= user.username %> | <a href="/logout">Logout</a></p>
-        <p><a href="/courses">Browse Courses</a> | <a href="/profile/<%= user.id %>">My Profile</a></p>
-    <% } else { %>
-        <p><a href="/login">Login</a> | <a href="/register">Register</a></p>
-    <% } %>
+<div class="page-wrapper">
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a href="/" class="nav-brand">My<span>Edu</span>Connect</a>
+      <ul class="nav-links">
+        <% if (user) { %>
+          <li><a href="/courses">Courses</a></li>
+          <li><a href="/profile/<%= user.id %>">Profile</a></li>
+          <li><a href="/logout" class="btn btn-ghost" style="padding:8px 18px;">Logout</a></li>
+        <% } else { %>
+          <li><a href="/courses">Courses</a></li>
+          <li><a href="/login">Sign In</a></li>
+          <li><a href="/register" class="btn btn-sm" style="padding:8px 18px; border:1px solid var(--gold); border-radius:4px;">Get Started</a></li>
+        <% } %>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid-line"></div>
+    <div class="container">
+
+      <% if (user) { %>
+        <!-- LOGGED IN STATE -->
+        <div class="hero-eyebrow animate">Welcome back</div>
+        <h1 class="hero-headline animate delay-1">
+          Ready to <em>continue</em><br>your journey?
+        </h1>
+        <p class="hero-desc animate delay-2">
+          Pick up where you left off or explore something new. Your next breakthrough is one lesson away.
+        </p>
+        <div class="welcome-card animate delay-3">
+          <div>
+            <div class="text-mono text-muted mb-8">Signed in as</div>
+            <div class="welcome-name"><%= user.username %></div>
+          </div>
+          <div class="welcome-links">
+            <a href="/courses" class="btn btn-filled">Browse Courses</a>
+            <a href="/profile/<%= user.id %>" class="btn btn-ghost">My Profile</a>
+            <a href="/logout" class="btn btn-ghost">Logout</a>
+          </div>
+        </div>
+
+      <% } else { %>
+        <!-- GUEST STATE -->
+        <div class="hero-eyebrow animate">The future of learning</div>
+        <h1 class="hero-headline animate delay-1">
+          Knowledge that<br><em>transcends</em><br>boundaries.
+        </h1>
+        <p class="hero-desc animate delay-2">
+          MyEduConnect brings world-class education to your fingertips. Explore hundreds of expert-led courses and invest in yourself.
+        </p>
+        <div class="hero-cta animate delay-3">
+          <a href="/register" class="btn btn-filled">Start Learning Free</a>
+          <a href="/courses" class="btn">Browse Courses</a>
+        </div>
+      <% } %>
+
+      <!-- STATS -->
+      <div class="stats-bar animate delay-4">
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-num">500<span>+</span></div>
+            <div class="stat-label">Expert Courses</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num">40<span>k</span></div>
+            <div class="stat-label">Active Learners</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num">98<span>%</span></div>
+            <div class="stat-label">Satisfaction Rate</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</div>
 </body>
 </html>
