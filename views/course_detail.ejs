@@ -1,29 +1,273 @@
 <!DOCTYPE html>
-<html>
-<head><title><%= course.title %> - MyEduConnect</title></head>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= course.title %> — MyEduConnect</title>
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    .detail-layout {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 40px;
+      padding: 56px 0 80px;
+      align-items: start;
+    }
+
+    /* Breadcrumb */
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: .08em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+    .breadcrumb a { color: var(--muted); }
+    .breadcrumb a:hover { color: var(--gold); }
+    .breadcrumb .sep { color: var(--border2); }
+
+    /* Course hero */
+    .course-hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 300;
+      color: var(--cream);
+      line-height: 1.1;
+      margin-bottom: 20px;
+    }
+    .course-desc {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.75;
+      max-width: 600px;
+    }
+
+    /* Comments */
+    .comments-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+    .comments-title {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: var(--cream);
+    }
+    .comment-item {
+      padding: 20px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .comment-item:last-child { border-bottom: none; }
+    .comment-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .comment-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      color: var(--gold);
+      font-weight: 500;
+      text-transform: uppercase;
+    }
+    .comment-username {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--cream);
+    }
+    .comment-text {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.65;
+      padding-left: 44px;
+    }
+    .no-comments {
+      padding: 40px;
+      text-align: center;
+      color: var(--muted);
+      border: 1px dashed var(--border);
+      border-radius: var(--radius);
+    }
+
+    /* Sidebar */
+    .course-sidebar {
+      position: sticky;
+      top: 90px;
+    }
+    .sidebar-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .sidebar-card-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface2);
+    }
+    .sidebar-price {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 300;
+      color: var(--gold);
+    }
+    .sidebar-price-sub {
+      font-size: 12px;
+      color: var(--muted);
+      font-family: var(--font-mono);
+    }
+    .sidebar-card-body { padding: 24px; }
+    .sidebar-feature {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 0;
+      font-size: 13px;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+    }
+    .sidebar-feature:last-of-type { border-bottom: none; margin-bottom: 20px; }
+    .sidebar-feature .icon { font-size: 15px; }
+
+    /* Add comment form */
+    .comment-form-section {
+      margin-top: 40px;
+      padding-top: 40px;
+      border-top: 1px solid var(--border);
+    }
+    .comment-form-title {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 400;
+      color: var(--cream);
+      margin-bottom: 20px;
+    }
+
+    @media (max-width: 900px) {
+      .detail-layout { grid-template-columns: 1fr; }
+      .course-sidebar { position: static; }
+    }
+  </style>
+</head>
 <body>
-    <h1><%= course.title %></h1>
-    <p><%= course.description %></p>
+<div class="page-wrapper">
 
-    <h3>Comments</h3>
-    <% if (comments && comments.length) { %>
-        <% comments.forEach(c => { %>
-            <div style="border-bottom:1px solid #ccc; margin:10px 0;">
-                <strong><%= c.username %></strong>:
-               <!-- Vulnerability: Using <%- without escaping output can cause stored XSS -->
-                <%- c.comment %>
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a href="/" style="font-family:var(--font-display);font-size:1.4rem;font-weight:600;color:var(--cream);text-decoration:none;">My<span style="color:var(--gold);">Edu</span>Connect</a>
+      <ul class="nav-links">
+        <li><a href="/courses">Courses</a></li>
+        <li><a href="/">Home</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="detail-layout">
+
+      <!-- MAIN CONTENT -->
+      <main>
+        <div class="breadcrumb animate">
+          <a href="/">Home</a>
+          <span class="sep">/</span>
+          <a href="/courses">Courses</a>
+          <span class="sep">/</span>
+          <span><%= course.title %></span>
+        </div>
+
+        <h1 class="course-hero-title animate delay-1"><%= course.title %></h1>
+        <p class="course-desc animate delay-2"><%= course.description %></p>
+
+        <hr class="divider mt-40">
+
+        <!-- COMMENTS -->
+        <div class="comments-header animate delay-2">
+          <div class="comments-title">Discussion</div>
+          <span class="badge">
+            <%= comments && comments.length ? comments.length : 0 %> comments
+          </span>
+        </div>
+
+        <% if (comments && comments.length) { %>
+          <div class="animate delay-3">
+            <% comments.forEach(c => { %>
+              <div class="comment-item">
+                <div class="comment-meta">
+                  <div class="comment-avatar"><%= c.username ? c.username[0] : '?' %></div>
+                  <span class="comment-username"><%= c.username %></span>
+                </div>
+                <div class="comment-text"><%- c.comment %></div>
+              </div>
+            <% }) %>
+          </div>
+        <% } else { %>
+          <div class="no-comments animate delay-3">
+            <p>No comments yet. Be the first to share your thoughts!</p>
+          </div>
+        <% } %>
+
+        <!-- ADD COMMENT FORM -->
+        <div class="comment-form-section animate delay-4">
+          <div class="comment-form-title">Add a Comment</div>
+          <form method="POST" action="/courses/<%= course.id %>/comment">
+            <div class="form-group">
+              <label class="form-label">Your thoughts</label>
+              <textarea name="comment" class="form-textarea" placeholder="Share what you think about this course…"></textarea>
             </div>
-        <% }) %>
-    <% } else { %>
-        <p>No comments yet.</p>
-    <% } %>
+            <button type="submit" class="btn btn-filled">Post Comment</button>
+          </form>
+        </div>
 
-    <h3>Add a Comment</h3>
-    <form method="POST" action="/courses/<%= course.id %>/comment">
-        <textarea name="comment" rows="4" cols="50" placeholder="Write your comment..."></textarea><br>
-        <button type="submit">Post Comment</button>
-    </form>
+      </main>
 
-    <p><a href="/courses">Back to Courses</a> | <a href="/payment/checkout/<%= course.id %>">Enroll (Mock Payment)</a></p>
+      <!-- SIDEBAR -->
+      <aside class="course-sidebar animate delay-2">
+        <div class="sidebar-card">
+          <div class="sidebar-card-header">
+            <div class="sidebar-price">Free</div>
+            <div class="sidebar-price-sub">Full lifetime access</div>
+          </div>
+          <div class="sidebar-card-body">
+            <div class="sidebar-feature">
+              <span class="icon">📹</span> On-demand video lessons
+            </div>
+            <div class="sidebar-feature">
+              <span class="icon">📄</span> Downloadable resources
+            </div>
+            <div class="sidebar-feature">
+              <span class="icon">🏅</span> Certificate of completion
+            </div>
+            <div class="sidebar-feature">
+              <span class="icon">♾️</span> Lifetime access
+            </div>
+            <a href="/payment/checkout/<%= course.id %>" class="btn btn-filled btn-full">
+              Enrol Now →
+            </a>
+            <a href="/courses" class="btn btn-ghost btn-full mt-16" style="margin-top:12px;">
+              ← Browse All Courses
+            </a>
+          </div>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+
+</div>
 </body>
 </html>
