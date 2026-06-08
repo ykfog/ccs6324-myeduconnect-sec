@@ -1,14 +1,191 @@
 <!DOCTYPE html>
-<html>
-<head><title>Register - MyEduConnect</title></head>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Account — MyEduConnect</title>
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    .auth-layout {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 480px;
+    }
+    .auth-panel-left {
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 40px 48px;
+      position: relative;
+      overflow: hidden;
+    }
+    .auth-panel-left::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 70% 70% at 60% 40%, rgba(201,168,76,0.07) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .auth-brand {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: var(--cream);
+    }
+    .auth-brand span { color: var(--gold); }
+    .auth-feature-list {
+      list-style: none;
+      position: relative;
+      z-index: 1;
+    }
+    .auth-feature-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .auth-feature-list li:last-child { border-bottom: none; }
+    .feat-icon {
+      width: 36px;
+      height: 36px;
+      border: 1px solid var(--border2);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+      background: var(--surface2);
+    }
+    .feat-title {
+      font-weight: 500;
+      color: var(--cream);
+      font-size: 14px;
+    }
+    .feat-desc {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 3px;
+    }
+    .auth-panel-left-footer { font-size: 12px; color: var(--muted); font-family: var(--font-mono); }
+
+    .auth-panel-right {
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 48px;
+    }
+    .auth-form-wrap { width: 100%; max-width: 360px; }
+    .auth-title {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 300;
+      color: var(--cream);
+      margin-bottom: 6px;
+    }
+    .auth-title em { font-style: italic; color: var(--gold); }
+    .auth-sub { font-size: 13px; color: var(--muted); margin-bottom: 32px; }
+    .auth-footer-link { text-align: center; margin-top: 24px; font-size: 13px; color: var(--muted); }
+    .auth-footer-link a { color: var(--gold); }
+    .step-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 24px;
+    }
+
+    @media (max-width: 768px) {
+      .auth-layout { grid-template-columns: 1fr; }
+      .auth-panel-left { display: none; }
+      .auth-panel-right { padding: 60px 24px; }
+    }
+  </style>
+</head>
 <body>
-    <h2>Register</h2>
-    <form method="POST" action="/register">
-        <input type="text" name="username" placeholder="Username" required><br>
-        <input type="password" name="password" placeholder="Password" required><br>
-        <input type="text" name="fullname" placeholder="Full Name"><br>
-        <button type="submit">Register</button>
-    </form>
-    <p>Already have an account? <a href="/login">Login</a></p>
+<div class="auth-layout">
+
+  <!-- LEFT PANEL -->
+  <div class="auth-panel-left animate">
+    <a href="/" class="auth-brand">My<span>Edu</span>Connect</a>
+    <ul class="auth-feature-list">
+      <li>
+        <div class="feat-icon">🎓</div>
+        <div>
+          <div class="feat-title">500+ Premium Courses</div>
+          <div class="feat-desc">Expertly crafted content across technology, arts, and sciences.</div>
+        </div>
+      </li>
+      <li>
+        <div class="feat-icon">🏅</div>
+        <div>
+          <div class="feat-title">Verifiable Certificates</div>
+          <div class="feat-desc">Earn credentials that employers recognize and respect.</div>
+        </div>
+      </li>
+      <li>
+        <div class="feat-icon">♾️</div>
+        <div>
+          <div class="feat-title">Learn at Your Pace</div>
+          <div class="feat-desc">Lifetime access — start, pause, and resume on your schedule.</div>
+        </div>
+      </li>
+      <li>
+        <div class="feat-icon">💬</div>
+        <div>
+          <div class="feat-title">Community & Mentors</div>
+          <div class="feat-desc">Join a global network of learners and industry experts.</div>
+        </div>
+      </li>
+    </ul>
+    <div class="auth-panel-left-footer">© 2025 MyEduConnect</div>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="auth-panel-right">
+    <div class="auth-form-wrap animate">
+
+      <div class="step-label">Step 01 — Create Account</div>
+      <h1 class="auth-title">Begin your <em>story.</em></h1>
+      <p class="auth-sub">Join thousands of learners expanding their horizons.</p>
+
+      <form method="POST" action="/register">
+
+        <div class="form-group">
+          <label class="form-label">Full Name</label>
+          <input type="text" name="fullname" class="form-input" placeholder="Jane Doe">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Username</label>
+          <input type="text" name="username" class="form-input" placeholder="jane_doe" required autocomplete="username">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" name="password" class="form-input" placeholder="Min. 8 characters" required autocomplete="new-password">
+        </div>
+
+        <p class="text-mono text-muted mt-16 mb-24" style="font-size:11px; line-height:1.6;">
+          By registering you agree to our Terms of Service and Privacy Policy.
+        </p>
+
+        <button type="submit" class="btn btn-filled btn-full">Create Account</button>
+
+      </form>
+
+      <p class="auth-footer-link mt-24">
+        Already have an account? <a href="/login">Sign in &rarr;</a>
+      </p>
+
+    </div>
+  </div>
+
+</div>
 </body>
 </html>
