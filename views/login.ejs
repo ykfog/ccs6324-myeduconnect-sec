@@ -1,13 +1,194 @@
 <!DOCTYPE html>
-<html>
-<head><title>Login - MyEduConnect</title></head>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In — MyEduConnect</title>
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    .auth-layout {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 480px;
+    }
+    /* Left panel */
+    .auth-panel-left {
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 40px 48px;
+      position: relative;
+      overflow: hidden;
+    }
+    .auth-panel-left::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 30% 70%, rgba(201,168,76,0.06) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .auth-brand {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: var(--cream);
+    }
+    .auth-brand span { color: var(--gold); }
+    .auth-quote {
+      position: relative;
+      z-index: 1;
+    }
+    .auth-quote blockquote {
+      font-family: var(--font-display);
+      font-size: 2.4rem;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--cream);
+      line-height: 1.25;
+      max-width: 480px;
+    }
+    .auth-quote blockquote em { color: var(--gold); font-style: normal; }
+    .auth-quote cite {
+      display: block;
+      margin-top: 20px;
+      font-size: 12px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-style: normal;
+    }
+    .auth-panel-left-footer {
+      font-size: 12px;
+      color: var(--muted);
+      font-family: var(--font-mono);
+    }
+    /* Right panel */
+    .auth-panel-right {
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 48px;
+    }
+    .auth-form-wrap {
+      width: 100%;
+      max-width: 360px;
+    }
+    .auth-title {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 300;
+      color: var(--cream);
+      margin-bottom: 6px;
+    }
+    .auth-title em { font-style: italic; color: var(--gold); }
+    .auth-sub {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 36px;
+    }
+    .input-icon-wrap {
+      position: relative;
+    }
+    .input-icon-wrap .form-input {
+      padding-left: 42px;
+    }
+    .input-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      font-size: 14px;
+      pointer-events: none;
+    }
+    .auth-footer-link {
+      text-align: center;
+      margin-top: 24px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .auth-footer-link a { color: var(--gold); }
+    .auth-divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 28px 0;
+      color: var(--muted);
+      font-size: 11px;
+      font-family: var(--font-mono);
+      letter-spacing: .1em;
+    }
+    .auth-divider::before, .auth-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    @media (max-width: 768px) {
+      .auth-layout { grid-template-columns: 1fr; }
+      .auth-panel-left { display: none; }
+      .auth-panel-right { padding: 60px 24px; }
+    }
+  </style>
+</head>
 <body>
-    <h2>Login</h2>
-    <form method="POST" action="/login">
-        <input type="text" name="username" placeholder="Username" required><br>
-        <input type="password" name="password" placeholder="Password" required><br>
-        <button type="submit">Login</button>
-    </form>
-    <p>Don't have an account? <a href="/register">Register</a></p>
+<div class="auth-layout">
+
+  <!-- LEFT PANEL -->
+  <div class="auth-panel-left animate">
+    <a href="/" class="auth-brand">My<span>Edu</span>Connect</a>
+    <div class="auth-quote">
+      <blockquote>
+        "The more that you <em>read</em>, the more things you will know."
+      </blockquote>
+      <cite>— Dr. Seuss</cite>
+    </div>
+    <div class="auth-panel-left-footer">© 2025 MyEduConnect</div>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="auth-panel-right">
+    <div class="auth-form-wrap animate">
+
+      <h1 class="auth-title">Welcome <em>back.</em></h1>
+      <p class="auth-sub">Sign in to continue your learning journey.</p>
+
+      <form method="POST" action="/login">
+
+        <div class="form-group">
+          <label class="form-label">Username</label>
+          <div class="input-icon-wrap">
+            <span class="input-icon">@</span>
+            <input type="text" name="username" class="form-input" placeholder="your_username" required autocomplete="username">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <div class="input-icon-wrap">
+            <span class="input-icon">🔒</span>
+            <input type="password" name="password" class="form-input" placeholder="••••••••" required autocomplete="current-password">
+          </div>
+        </div>
+
+        <div class="auth-divider">secure login</div>
+
+        <button type="submit" class="btn btn-filled btn-full">Sign In</button>
+
+      </form>
+
+      <p class="auth-footer-link mt-24">
+        Don't have an account? <a href="/register">Create one &rarr;</a>
+      </p>
+
+    </div>
+  </div>
+
+</div>
 </body>
 </html>
