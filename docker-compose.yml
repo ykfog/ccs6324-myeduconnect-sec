@@ -15,7 +15,7 @@ services:
 
   # 2. Backend Service (Node.js)
   backend:
-    build: ./backend # Assumes you have a 'backend' folder with your Node.js Dockerfile
+    build: .
     container_name: myeduconnect_backend
     environment:
       - DB_HOST=db

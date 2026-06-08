@@ -1,8 +1,7 @@
 const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
-const path = require('path');
-
+const path = require('path')
 const app = express();
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -17,11 +16,11 @@ app.use(session({
 app.use(express.static('public'));
 
 // Router
-app.use('/', require('./routes/auth'));
-app.use('/courses', require('./routes/courses'));
-app.use('/profile', require('./routes/profile'));
-app.use('/payment', require('./routes/payment'));
+app.use('/', require('./router/auth'));
+app.use('/courses', require('./router/courses'));
+app.use('/profile', require('./router/profile'));
+app.use('/payment', require('./router/payment'));
 
 app.get('/', (req, res) => res.render('index', { user: req.session.user }));
 
-app.listen(3000, () => console.log('Server running on port 3000'));
+app.listen(8080, () => console.log('Server running on port 8080'));
