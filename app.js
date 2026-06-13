@@ -20,6 +20,7 @@ app.use('/', require('./router/auth'));
 app.use('/courses', require('./router/courses'));
 app.use('/profile', require('./router/profile'));
 app.use('/payment', require('./router/payment'));
+app.use('/api', require('./router/api'));   // <-- ADD THIS LINE
 
 app.get('/', (req, res) => res.render('index', { user: req.session.user }));
 

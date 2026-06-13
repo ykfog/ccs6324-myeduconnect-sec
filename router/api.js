@@ -1,18 +1,27 @@
-// myeduconnect-sec-project backend (Vulnerable Implementation)
-// MODE TOGGLE: every request can send `X-Mode: vulnerable` or `X-Mode: safe`(defaults to "vulnerable"). The mobile app's top-left toggle sets this header.
-// vulnerable mode: SQL injection in login, IDOR on profile, predictable session tokens, MD5 password hashing, unsanitized stored comments (XSS).
-// safe mode: parameterized queries, profile ownership checks, random session tokens, bcrypt password hashing, escaped comments.
+// REST API for the MyEduConnect companion mobile app.
+//
+// MODE TOGGLE: every request can send `X-Mode: vulnerable` or `X-Mode: safe`
+// (defaults to "vulnerable"). The mobile app's top-left toggle sets this header.
+//
+//   vulnerable mode: SQL injection in login, IDOR on profile, predictable
+//   session tokens, MD5 password hashing, unsanitized stored comments (XSS).
+//
+//   safe mode: parameterized queries, profile ownership checks, random
+//   session tokens, bcrypt password hashing, escaped comments.
+//
+// Both modes run side-by-side so the same backend can demo an attack
+
 
 const express = require('express');
 const crypto = require('crypto');
 const bcrypt = require('bcryptjs');
 const db = require('../db');
 
-const app = express();
-app.use(express.json());
+const router = express.Router();
+router.use(express.json());
 
 // CORS so the Expo app (different origin/port) can call this API
-app.use((req, res, next) => {
+router.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Mode');
     res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
@@ -51,7 +60,7 @@ function authMiddleware(req, res, next) {
 }
 
 // AUTH: Register
-app.post('/api/register', async (req, res) => {
+router.post('/register', async (req, res) => {
     const mode = getMode(req);
     const { username, password, fullname } = req.body;
 
@@ -79,7 +88,7 @@ app.post('/api/register', async (req, res) => {
 });
 
 // AUTH: Login
-app.post('/api/login', async (req, res) => {
+router.post('/login', async (req, res) => {
     const mode = getMode(req);
     const { username, password } = req.body;
 
@@ -134,21 +143,21 @@ app.post('/api/login', async (req, res) => {
     }
 });
 
-app.post('/api/logout', authMiddleware, (req, res) => {
+router.post('/logout', authMiddleware, (req, res) => {
     const token = (req.headers['authorization'] || '').replace('Bearer ', '');
     sessions.delete(token);
     res.json({ message: 'Logged out' });
 });
 
 // COURSES: List / Search
-app.get('/api/courses', async (req, res) => {
+router.get('/courses', async (req, res) => {
     const search = req.query.search || '';
     const [courses] = await db.query('SELECT * FROM courses WHERE title LIKE ?', [`%${search}%`]);
     res.json({ courses });
 });
 
 // COURSES: Detail + Comments
-app.get('/api/courses/:id', async (req, res) => {
+router.get('/courses/:id', async (req, res) => {
     const [course] = await db.query('SELECT * FROM courses WHERE id = ?', [req.params.id]);
     if (course.length === 0) return res.status(404).json({ error: 'Course not found' });
 
@@ -160,7 +169,7 @@ app.get('/api/courses/:id', async (req, res) => {
 });
 
 // COURSES: Post comment
-app.post('/api/courses/:id/comment', authMiddleware, async (req, res) => {
+router.post('/courses/:id/comment', authMiddleware, async (req, res) => {
     const mode = getMode(req);
     let { comment } = req.body;
 
@@ -184,7 +193,7 @@ app.post('/api/courses/:id/comment', authMiddleware, async (req, res) => {
 });
 
 // PROFILE: View
-app.get('/api/profile/:id', authMiddleware, async (req, res) => {
+router.get('/profile/:id', authMiddleware, async (req, res) => {
     const mode = getMode(req);
     const requestedId = req.params.id;
 
@@ -201,7 +210,7 @@ app.get('/api/profile/:id', authMiddleware, async (req, res) => {
 });
 
 // PROFILE: Update bio
-app.post('/api/profile/:id/update', authMiddleware, async (req, res) => {
+router.post('/profile/:id/update', authMiddleware, async (req, res) => {
     if (String(req.authUser.id) !== String(req.params.id)) {
         return res.status(403).json({ error: 'Forbidden' });
     }
@@ -211,7 +220,7 @@ app.post('/api/profile/:id/update', authMiddleware, async (req, res) => {
 });
 
 // ENROLL / PAYMENT (mock)
-app.post('/api/enroll', authMiddleware, async (req, res) => {
+router.post('/enroll', authMiddleware, async (req, res) => {
     const { course_id } = req.body;
     if (!course_id) return res.status(400).json({ error: 'course_id is required' });
 
@@ -222,7 +231,7 @@ app.post('/api/enroll', authMiddleware, async (req, res) => {
     res.json({ message: 'Enrolled successfully (mock payment)' });
 });
 
-app.get('/api/enrollments', authMiddleware, async (req, res) => {
+router.get('/enrollments', authMiddleware, async (req, res) => {
     const [rows] = await db.query(
         `SELECT e.id, e.course_id, e.payment_status, c.title
          FROM enrollments e JOIN courses c ON e.course_id = c.id
@@ -233,9 +242,8 @@ app.get('/api/enrollments', authMiddleware, async (req, res) => {
 });
 
 // Health check
-app.get('/api/health', (req, res) => {
+router.get('/health', (req, res) => {
     res.json({ status: 'ok', mode: getMode(req) });
 });
 
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => console.log(`Companion app backend running on port ${PORT}`));
+module.exports = router;
