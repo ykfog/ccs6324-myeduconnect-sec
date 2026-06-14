@@ -23,4 +23,24 @@ app.use('/payment', require('./router/payment'));
 
 app.get('/', (req, res) => res.render('index', { user: req.session.user }));
 
+// --- LEGACY VULNERABLE API FOR PHASE 1 TESTING ---
+let sessionCounter = 1n;
+
+function generateWeakSessionToken() {
+    let hexString = sessionCounter.toString(16);
+    let paddedHex = hexString.padStart(32, '0');
+    sessionCounter++;
+    return '0x' + paddedHex;
+}
+
+app.post('/api/login', (req, res) => {
+    // We ignore the username/password here and just blindly generate the vulnerable token
+    const token = generateWeakSessionToken();
+    res.json({
+        message: "Legacy API Login successful",
+        sessionToken: token
+    });
+});
+// -------------------------------------------------
+
 app.listen(8080, () => console.log('Server running on port 8080'));
