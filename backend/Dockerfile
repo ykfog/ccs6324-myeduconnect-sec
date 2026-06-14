@@ -8,7 +8,7 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 # Force install express and mysql2 so the server has its core requirements
-RUN npm install express mysql2 dotenv
+RUN npm install express mysql2 dotenv ejs express-session body-parser escape-html bcryptjs
 
 # Copy the rest of your backend application code
 COPY . .

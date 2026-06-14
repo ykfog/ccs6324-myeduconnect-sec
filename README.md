@@ -44,6 +44,15 @@ The following containers should display an **Up** status:
 
 ---
 
+## Step 4: Run Companion Mobile App (Optional)
+
+```bash
+cd mobile-app
+npm install
+npx expo start --web
+
+```
+
 # Accessing the Platform
 
 Once all containers are running, you can access the application through the following endpoints:
@@ -53,6 +62,7 @@ Once all containers are running, you can access the application through the foll
 | Main Website (Nginx Proxy) | http://127.0.0.1 | Front-end web application |
 | Direct API (Node.js Backend) | http://127.0.0.1:8080 | Backend API endpoint (bypasses Nginx proxy) |
 | MySQL Database | 127.0.0.1:3306 | Database access using `root:root` credentials |
+| Mobile App (Expo) | http://127.0.0.1:8081 | React Native companion app |
 
 ### Database Credentials
 

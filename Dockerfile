@@ -3,7 +3,7 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 # Force install all the required web dependencies
-RUN npm install express mysql2 dotenv ejs express-session body-parser escape-html
+RUN npm install express mysql2 dotenv ejs express-session body-parser escape-html bcryptjs
 
 COPY . .
 EXPOSE 8080
