@@ -12,6 +12,7 @@ services:
       - "3306:3306" # VULNERABILITY: Database port exposed directly to the public/host network instead of remaining internal-only
     volumes:
       - db_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
   # 2. Backend Service (Node.js)
   backend:
@@ -33,11 +34,20 @@ services:
     image: nginx:alpine
     container_name: myeduconnect_proxy
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro # Assumes you have an nginx config folder
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
     ports:
       - "80:80" # VULNERABILITY: Cleartext HTTP traffic. No TLS/SSL configured (Missing HTTPS)
     depends_on:
       - backend
+
+  # 4. SSH Service
+  ssh:
+    image: rastasheep/ubuntu-sshd:latest
+    container_name: myeduconnect_ssh
+    environment:
+      - ROOT_PASSWORD=root # VULNERABILITY: Weak SSH credentials (root:root)
+    ports:
+      - "2222:22" # SSH exposed on port 2222
 
 volumes:
   db_data:
