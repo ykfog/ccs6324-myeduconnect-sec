@@ -41,6 +41,7 @@ The following containers should display an **Up** status:
 - `myeduconnect_proxy`
 - `myeduconnect_backend`
 - `myeduconnect_db`
+- `myeduconnect_ssh`
 
 ---
 
@@ -63,6 +64,7 @@ Once all containers are running, you can access the application through the foll
 | Direct API (Node.js Backend) | http://127.0.0.1:8080 | Backend API endpoint (bypasses Nginx proxy) |
 | MySQL Database | 127.0.0.1:3306 | Database access using `root:root` credentials |
 | Mobile App (Expo) | http://127.0.0.1:8081 | React Native companion app |
+| SSH Service | localhost:2222 | SSH access using `root:root` credentials |
 
 ### Database Credentials
 
@@ -72,6 +74,24 @@ Port: 3306
 Username: root
 Password: root
 ```
+
+---
+
+### SSH Credentials
+
+```text
+Host: localhost
+Port: 2222
+Username: root
+Password: root
+```
+
+---
+
+## To Test SSH
+
+ssh root@localhost -p 2222
+Password: root
 
 ---
 
